@@ -4,14 +4,14 @@ import "time"
 
 func WeekSlots(now time.Time, location *time.Location) []Slot {
 	const firstHour, closingHour, days = 9, 18, 7
-	localNow := now.In(location)
-	firstDay := time.Date(localNow.Year(), localNow.Month(), localNow.Day(), 0, 0, 0, 0, location)
+	year, month, day := now.In(location).Date()
+	firstCalendarDate := time.Date(year, month, day, 0, 0, 0, 0, time.UTC)
 
 	slots := make([]Slot, 0, days*(closingHour-firstHour))
 	for dayOffset := range days {
-		date := firstDay.AddDate(0, 0, dayOffset)
+		year, month, day := firstCalendarDate.AddDate(0, 0, dayOffset).Date()
 		for hour := firstHour; hour < closingHour; hour++ {
-			start := time.Date(date.Year(), date.Month(), date.Day(), hour, 0, 0, 0, location)
+			start := time.Date(year, month, day, hour, 0, 0, 0, location)
 			slots = append(slots, Slot{StartsAt: start, EndsAt: start.Add(time.Hour)})
 		}
 	}
