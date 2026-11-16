@@ -481,7 +481,7 @@ button:disabled {
   line-height: 1.45;
 }
 
-.dialog-time time { text-transform: capitalize; }
+.dialog-time time::first-letter { text-transform: uppercase; }
 
 .dialog-description { color: var(--muted); line-height: 1.5; }
 
@@ -604,8 +604,13 @@ button:disabled {
 }
 
 @media (max-width: 360px) {
+  .site-width { width: calc(100% - 24px); }
   .time-zone { font-size: 0.75rem; }
-  .slot-button { font-size: 0.75rem; }
+  .slots-table :is(th, td) { padding-inline: 2px; }
+  .slots-table tr > :first-child { padding-inline-start: 8px; }
+  .slots-table tr > :last-child { padding-inline-end: 8px; }
+  .slot-status { gap: 4px; padding-inline: 4px; }
+  .slot-button { padding-inline: 6px; font-size: 0.75rem; }
   .dialog-content { padding-inline: 16px; }
   .dialog-header { padding-inline-start: 16px; }
 }

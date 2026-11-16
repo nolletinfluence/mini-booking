@@ -20,6 +20,15 @@ docker compose up --build
 docker compose exec backend booking seed
 ```
 
+Для запуска с другим часовым поясом используйте отдельное имя проекта Compose. Так тестовая копия получит свой том SQLite.
+
+```sh
+BOOKING_TIME_ZONE=America/Santiago BOOKING_WEB_PORT=5174 BOOKING_API_PORT=8081 \
+  docker compose -p mini-booking-santiago up --build
+```
+
+Остановить эту копию можно командой `docker compose -p mini-booking-santiago down`.
+
 ## Запуск без Docker
 
 Нужны Go 1.26+, Node.js 22.12+ из ветки 22 и npm. SQLite встроен в Go-драйвер и запускается без отдельного сервера.
