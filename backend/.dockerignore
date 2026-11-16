@@ -1,0 +1,4 @@
+data
+booking
+.env*
+.DS_Store

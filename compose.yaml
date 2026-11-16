@@ -1,0 +1,32 @@
+services:
+  backend:
+    build: ./backend
+    environment:
+      BOOKING_DB_PATH: /data/booking.db
+      BOOKING_TIME_ZONE: ${BOOKING_TIME_ZONE:-Asia/Bishkek}
+      BOOKING_HTTP_ADDR: :8080
+    command: ["sh", "-ec", "booking migrate && booking seed && exec booking serve"]
+    ports:
+      - "127.0.0.1:${BOOKING_API_PORT:-8080}:8080"
+    volumes:
+      - booking-data:/data
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "-o", "/dev/null", "http://127.0.0.1:8080/api/slots"]
+      interval: 3s
+      timeout: 2s
+      retries: 10
+      start_period: 5s
+
+  frontend:
+    build: ./frontend
+    init: true
+    environment:
+      BOOKING_API_TARGET: http://backend:8080
+    depends_on:
+      backend:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:${BOOKING_WEB_PORT:-5173}:5173"
+
+volumes:
+  booking-data:
